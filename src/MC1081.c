@@ -18,7 +18,7 @@
             return ret;       \
     } while (0)
 
-static inline MC1081_Status_t WriteByte(MC1081_Handle_t handle, uint8_t *data, size_t len)
+static inline MC1081_Status_t WriteByte(MC1081_Handle_t handle, const uint8_t *data, const size_t len)
 {
     MC1081_CHECKPTR(handle);
     MC1081_CHECKPTR(data);
@@ -62,7 +62,7 @@ MC1081_Status_t MC1081_GetTempRaw(MC1081_Handle_t handle, uint16_t *raw)
 
     MC1081_Status_t ret = MC1081_OK;
     uint8_t msb_reg = 0x00;
-    uint8_t lsb_reg = 0x01;
+
     MC1081_TDATA_Reg_t tdata = {0};
 
     ret = WriteByte(handle, &msb_reg, 1); // 写一个字节
@@ -147,11 +147,6 @@ MC1081_Status_t MC1081_GetDiffDCHxRaw(MC1081_Handle_t handle, MC1081_Channel_Dif
     return sta;
 }
 
-/**
- * @brief 检查单端或参比通道是否溢出
- * @param ch 目标通道 (DCH0-9 或 REF)
- * @return true: 发生溢出, false: 正常
- */
 bool MC1081_IsSingleChOverflow(MC1081_Handle_t handle, MC1081_Channel_Single_t ch)
 {
     MC1081_CHECKPTR(handle);
@@ -251,7 +246,7 @@ MC1081_Status_t MC1081_TempConfig(MC1081_Handle_t handle, MC1081_TempConvState_t
     buf[0] = reg_addr;
     buf[1] = t_cmd.byte;
 
-    return WriteByte(handle, &t_cmd.byte, 2);
+    return WriteByte(handle, buf, 2);
 }
 
 MC1081_Status_t MC1081_CapMeasureSet(MC1081_Handle_t handle, MC1081_CapConvConfig_t conf)
