@@ -1,5 +1,4 @@
 #include "MC1081.h"
-#include "stdlib.h"
 #include "MC1081_reg.h"
 
 // mcor
